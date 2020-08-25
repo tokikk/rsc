@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 
-sg.theme('Material2')
+sg.theme('')
 
 size1 = [[sg.Radio('割合', "RADIO1", font=("Meiryo UI", 14), default=True)],
         [
@@ -38,17 +38,17 @@ path_frame = [[
     sg.FolderBrowse('参照', key='SavedPath')
 ]]
 input_frame = [[
-    sg.Table([],
+    sg.Table([''],
+             key="Table",
              headings=['ファイル'],
              auto_size_columns=False,
              def_col_width=5,
              num_rows=10,
              col_widths=[40],
              display_row_numbers=False,
-             enable_events=True,
              header_text_color='#0000ff',
              header_background_color='#cccccc')
-]]
+], [sg.FilesBrowse('参照', key='AddFile', size=(47,1))]]
 
 layout = [[sg.Frame(
     '変換サイズ',
@@ -77,5 +77,8 @@ while True:
         break
     if event == 'SavedPath':
         values['PathField'] = values['SavedPath']
+    if event == 'AddFile':
+        window['Table'].update(values['Table'].append(values['AddFile']))
+        window.Finalize()
 
 window.close
